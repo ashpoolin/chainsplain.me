@@ -1,5 +1,5 @@
-dotenv
-sqlalchemy
-llama_index
-openai
-flask
+python-dotenv==1.0.0
+SQLAlchemy==2.0.21
+llama-index==0.8.40
+openai==0.28.0
+Flask==3.0.0
