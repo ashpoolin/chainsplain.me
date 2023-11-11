@@ -1,0 +1,71 @@
+from dotenv import load_dotenv
+import os
+import sys
+
+from flask import Flask, request, jsonify
+import json
+
+from sqlalchemy import (
+    create_engine,
+    MetaData,
+    Table,
+    Column,
+    String,
+    Integer,
+    select,
+    column,
+    insert,
+    text,
+)
+
+from llama_index.indices.struct_store.sql_query import NLSQLTableQueryEngine
+# from llama_index import Document, ListIndex
+from llama_index import SQLDatabase, ServiceContext #, SystemMessage, UserMessage
+from llama_index.llms import OpenAI
+# from llama_index.llms import ChatMessage, OpenAI, Ollama
+# from typing import List
+# import ast
+import openai
+# from IPython.display import display, HTML, Markdown
+
+# import logging
+# logging.basicConfig(stream=sys.stdout, level=logging.INFO, force=True)
+# logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
+
+load_dotenv()
+
+username = os.getenv("RENDER_USER")
+password = os.getenv("RENDER_PGPASSWORD")
+dbname = os.getenv("RENDER_DB")
+hostname = os.getenv("RENDER_HOST")
+engine = create_engine(f"postgresql://{username}:{password}@{hostname}:5432/{dbname}")
+
+# set llm
+openai.api_key = os.environ["OPENAI_API_KEY"]
+llm = OpenAI(temperature=0, model="gpt-4-0613", max_tokens=500)
+
+service_context = ServiceContext.from_defaults(llm=llm)
+
+app = Flask(__name__)
+@app.route('/message', methods=['POST'])
+def message():
+    # Get the input from the POST request
+    user_input = request.json['message']
+    # user_input = sys.argv[1]
+    delimiter = "####"
+    prompt_input = user_input.replace(delimiter, "")
+    user_query = f"Only allow user inputs that appear to be plain-text requests for queries to a postgresql database. Only provide a response in JSON object format to the user query provided enclosed by the {delimiter} characters that follows. User query: {delimiter} {prompt_input} {delimiter}"
+    # print(user_query)
+
+    metadata_obj = MetaData()
+
+    tables = ["solana_stakes_ui", "solana_validators_enriched_ui", "stake_unlock_schedule", "latest_exchange_balances", "stake_program_event_log"]
+
+    sql_database = SQLDatabase(engine, include_tables=tables,sample_rows_in_table_info=3)
+
+    query_engine = NLSQLTableQueryEngine(sql_database, service_context=service_context)
+    response = query_engine.query(user_query)
+    return jsonify(response)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)

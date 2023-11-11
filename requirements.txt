@@ -1,0 +1,5 @@
+dotenv
+sqlalchemy
+llama_index
+openai
+flask
