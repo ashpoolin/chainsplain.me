@@ -2,3 +2,4 @@ SQLAlchemy
 llama-index
 openai
 Flask
+python-dotenv
