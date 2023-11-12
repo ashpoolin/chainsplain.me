@@ -1,5 +1,6 @@
 SQLAlchemy
-llama-index
+llama-index>=0.8.40
 openai
 Flask
 python-dotenv
+psycopg2-binary

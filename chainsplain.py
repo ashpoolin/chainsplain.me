@@ -65,7 +65,15 @@ def message():
 
     query_engine = NLSQLTableQueryEngine(sql_database, service_context=service_context)
     response = query_engine.query(user_query)
-    return jsonify(response)
+    # return response
+    print(response)
+    return json.loads(str(response))
+    # return jsonify([response])
 
 if __name__ == '__main__':
+    # app.run(host='0.0.0.0', port=5000)
     app.run(host='0.0.0.0', port=80)
+
+    # example queries:
+    # curl -X POST -H "Content-Type: application/json" -d '{"message":"what is the balance for the stakepubkey = '4XCJ5PbHJWP1xfBKyYmV6GnUox1KY1czCiBQW1U3NCNj'"}' http://localhost:5000/message
+    # curl -X POST -H "Content-Type: application/json" -d '{"message":"what are the top 5 validators and their balances, ranked by activestake descending?"}' http://localhost:5000/message
