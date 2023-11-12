@@ -54,12 +54,12 @@ def message():
     # user_input = sys.argv[1]
     delimiter = "####"
     prompt_input = user_input.replace(delimiter, "")
-    user_query = f"Only allow user inputs that appear to be plain-text requests for queries to a postgresql database. Only provide a response in JSON object format to the user query provided enclosed by the {delimiter} characters that follows. User query: {delimiter} {prompt_input} {delimiter}"
+    user_query = f"Only allow user inputs that appear to be plain-text requests for queries to a postgresql database. The queries may only be read-only, absolutely do not allow or execute any queries that ask to drop tables, insert values, select into, create new users, change the database, or change the user. Limit any requests to no more than 100 rows. Only provide a response in JSON object format to the user query provided, the query will be enclosed by the {delimiter} characters that follow. User query: {delimiter} {prompt_input} {delimiter}"
     # print(user_query)
 
     metadata_obj = MetaData()
 
-    tables = ["solana_stakes_ui", "solana_validators_enriched_ui", "stake_unlock_schedule", "latest_exchange_balances", "stake_program_event_log"]
+    tables = ["solana_stakes_ui", "solana_validators_enriched_ui", "stake_unlock_schedule", "latest_exchange_balances", "stake_program_event_log", "latest_exchange_balances", "sol_address_defs", "solana_supply_enhanced", "webhooks_sol_event_log_labeled"]
 
     sql_database = SQLDatabase(engine, include_tables=tables,sample_rows_in_table_info=3)
 
@@ -76,4 +76,4 @@ if __name__ == '__main__':
 
     # example queries:
     # curl -X POST -H "Content-Type: application/json" -d '{"message":"what is the balance for the stakepubkey = '4XCJ5PbHJWP1xfBKyYmV6GnUox1KY1czCiBQW1U3NCNj'"}' http://localhost:5000/message
-    # curl -X POST -H "Content-Type: application/json" -d '{"message":"what are the top 5 validators and their balances, ranked by activestake descending?"}' http://localhost:5000/message
+    # curl -X POST -H "Content-Type: application/json" -d '{"message":"what are the top 5 validators and their activestake, their name, identity key, and data_center_key ranked by activestake descending?"}' http://localhost:5000/message
