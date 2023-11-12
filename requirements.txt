@@ -1,4 +1,4 @@
-llama-index>=0.8.40
+llama-index
 openai
 SQLAlchemy
 Flask
