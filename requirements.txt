@@ -1,6 +1,6 @@
-SQLAlchemy
 llama-index>=0.8.40
 openai
+SQLAlchemy
 Flask
 python-dotenv
 psycopg2-binary
