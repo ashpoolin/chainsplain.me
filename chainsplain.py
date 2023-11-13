@@ -47,8 +47,17 @@ llm = OpenAI(temperature=0, model="gpt-4-0613", max_tokens=500)
 
 service_context = ServiceContext.from_defaults(llm=llm)
 
+
 app = Flask(__name__)
-CORS(app, resources={r"/message": {"origins": "https://gelato.sh"}})
+allowed_origins = [
+    "https://gelato.sh",
+    os.getenv("ALLOWED_IP1"),
+    os.getenv("ALLOWED_IP2"),
+    os.getenv("ALLOWED_IP3"),
+    os.getenv("ALLOWED_IP4"),
+]
+CORS(app, resources={r"/message": {"origins": allowed_origins}})
+# CORS(app, resources={r"/message": {"origins": "https://gelato.sh"}})
 @app.route('/message', methods=['POST'])
 def message():
     # Get the input from the POST request
