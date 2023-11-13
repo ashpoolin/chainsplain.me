@@ -3,6 +3,7 @@ import os
 import sys
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import json
 
 from sqlalchemy import (
@@ -47,6 +48,7 @@ llm = OpenAI(temperature=0, model="gpt-4-0613", max_tokens=500)
 service_context = ServiceContext.from_defaults(llm=llm)
 
 app = Flask(__name__)
+CORS(app, resources={r"/message": {"origins": "https://gelato.sh"}})
 @app.route('/message', methods=['POST'])
 def message():
     # Get the input from the POST request
