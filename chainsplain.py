@@ -39,7 +39,7 @@ username = os.getenv("RENDER_USER")
 password = os.getenv("RENDER_PGPASSWORD")
 dbname = os.getenv("RENDER_DB")
 hostname = os.getenv("RENDER_HOST")
-engine = create_engine(f"postgresql://{username}:{password}@{hostname}:5432/{dbname}")
+engine = create_engine(f"postgres://{username}:{password}@{hostname}/{dbname}?sslmode=require")
 
 # set llm
 openai.api_key = os.environ["OPENAI_API_KEY"]
