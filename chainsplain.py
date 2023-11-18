@@ -39,7 +39,7 @@ username = os.getenv("RENDER_USER")
 password = os.getenv("RENDER_PGPASSWORD")
 dbname = os.getenv("RENDER_DB")
 hostname = os.getenv("RENDER_HOST")
-SQLALCHEMY_DATABASE_URI = f"postgres://{username}:{password}@{hostname}/{dbname}"
+SQLALCHEMY_DATABASE_URI = f"postgresql://{username}:{password}@{hostname}/{dbname}"
 engine = create_engine(SQLALCHEMY_DATABASE_URI, connect_args={'sslmode': "require"})
 
 # set llm
