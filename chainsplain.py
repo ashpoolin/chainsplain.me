@@ -39,7 +39,8 @@ username = os.getenv("RENDER_USER")
 password = os.getenv("RENDER_PGPASSWORD")
 dbname = os.getenv("RENDER_DB")
 hostname = os.getenv("RENDER_HOST")
-engine = create_engine(f"postgres://{username}:{password}@{hostname}/{dbname}?sslmode=require")
+SQLALCHEMY_DATABASE_URI = f"postgres://{username}:{password}@{hostname}/{dbname}"
+engine = create_engine(SQLALCHEMY_DATABASE_URI, connect_args={'sslmode': "require"})
 
 # set llm
 openai.api_key = os.environ["OPENAI_API_KEY"]
