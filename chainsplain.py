@@ -69,9 +69,9 @@ def message():
     user_query = f"Only allow user inputs that appear to be plain-text requests for queries to a postgresql database. The queries may only be read-only, absolutely do not allow or execute any queries that ask to drop tables, insert values, select into, create new users, change the database, or change the user. Limit any requests to no more than 100 rows. Only provide a response in JSON object format to the user query provided, the query will be enclosed by the {delimiter} characters that follow. User query: {delimiter} {prompt_input} {delimiter}"
     # print(user_query)
 
-    metadata_obj = MetaData()
+    # metadata_obj = MetaData()
 
-    tables = ["solana_stakes_ui", "solana_validators_enriched_ui", "stake_unlock_schedule", "latest_exchange_balances", "stake_program_event_log", "latest_exchange_balances", "sol_address_defs", "solana_supply_enhanced", "webhooks_sol_event_log_labeled"]
+    tables = ["solana_stakes_ui", "solana_validators_enriched_ui", "stake_unlock_schedule", "latest_exchange_balances", "stake_program_event_log", "sol_address_defs", "solana_supply_enhanced", "websockets_sol_event_log_labeled", "websockets_sol_event_log"]
 
     sql_database = SQLDatabase(engine, include_tables=tables,sample_rows_in_table_info=3)
 
